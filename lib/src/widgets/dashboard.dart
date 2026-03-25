@@ -49,7 +49,8 @@ class Dashboard<T extends DashboardItem> extends StatefulWidget {
       this.absorbPointer = true,
       this.animateEverytime = true,
       this.itemStyle = const ItemStyle(),
-      this.scrollToAdded = true})
+      this.scrollToAdded = true,
+      this.child})
       : assert((slotHeight == null && slotAspectRatio == null) ||
             !(slotHeight != null && slotAspectRatio != null)),
         editModeSettings = editModeSettings ?? EditModeSettings(),
@@ -194,6 +195,9 @@ class Dashboard<T extends DashboardItem> extends StatefulWidget {
   ///
   /// Look [Material] documentation for more.
   final ItemStyle itemStyle;
+
+  /// Optional child widget to be added to the Stack.
+  final Widget? child;
 
   @override
   State<Dashboard<T>> createState() => _DashboardState<T>();
@@ -454,7 +458,8 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
               key: _stateKey,
               itemBuilder: widget.itemBuilder,
               dashboardController: _layoutController,
-              offset: offset);
+              offset: offset,
+              child: widget.child);
         });
   }
 }

@@ -12,7 +12,8 @@ class _DashboardStack<T extends DashboardItem> extends StatefulWidget {
       required this.onScrollStateChange,
       required this.shouldCalculateNewDimensions,
       required this.itemStyle,
-      required this.emptyPlaceholder})
+      required this.emptyPlaceholder,
+      this.child})
       : super(key: key);
 
   final Widget? emptyPlaceholder;
@@ -29,6 +30,8 @@ class _DashboardStack<T extends DashboardItem> extends StatefulWidget {
   final ItemStyle itemStyle;
 
   final void Function() shouldCalculateNewDimensions;
+
+  final Widget? child;
 
   @override
   State<_DashboardStack<T>> createState() => _DashboardStackState<T>();
@@ -223,6 +226,7 @@ class _DashboardStackState<T extends DashboardItem>
     Widget result = Stack(
       clipBehavior: Clip.hardEdge,
       children: [
+        if (widget.child != null) widget.child!,
         if (widget.editModeSettings.paintBackgroundLines &&
             widget.dashboardController.isEditing)
           Positioned(
@@ -259,7 +263,7 @@ class _DashboardStackState<T extends DashboardItem>
             : [
                 buildPositioned(_widgetsMap[
                     widget.dashboardController.editSession?.editing.id]!)
-              ])
+              ]),
       ],
     );
 
