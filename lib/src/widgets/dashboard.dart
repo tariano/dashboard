@@ -51,8 +51,7 @@ class Dashboard<T extends DashboardItem> extends StatefulWidget {
       this.itemStyle = const ItemStyle(),
       this.scrollToAdded = true,
       this.child})
-      : assert((slotHeight == null && slotAspectRatio == null) ||
-            !(slotHeight != null && slotAspectRatio != null)),
+      : assert((slotHeight == null && slotAspectRatio == null) || !(slotHeight != null && slotAspectRatio != null)),
         editModeSettings = editModeSettings ?? EditModeSettings(),
         super(key: key);
 
@@ -203,8 +202,7 @@ class Dashboard<T extends DashboardItem> extends StatefulWidget {
   State<Dashboard<T>> createState() => _DashboardState<T>();
 }
 
-class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
-    with TickerProviderStateMixin {
+class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>> with TickerProviderStateMixin {
   ///
   @override
   void initState() {
@@ -233,8 +231,7 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
 
   AsyncSnapshot? get _snap => widget.dashboardItemController._asyncSnap?.value;
 
-  bool get _withDelegate =>
-      widget.dashboardItemController.itemStorageDelegate != null;
+  bool get _withDelegate => widget.dashboardItemController.itemStorageDelegate != null;
 
   ///
   late _DashboardLayoutController<T> _layoutController;
@@ -304,21 +301,16 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
     if (widget.slotHeight != null) {
       h = widget.slotHeight!;
     } else if (widget.slotAspectRatio != null) {
-      h = _layoutController._viewportDelegate.resolvedConstrains.maxWidth /
-          widget.slotCount /
-          widget.slotAspectRatio!;
+      h = _layoutController._viewportDelegate.resolvedConstrains.maxWidth / widget.slotCount / widget.slotAspectRatio!;
     } else {
-      h = _layoutController._viewportDelegate.resolvedConstrains.maxWidth /
-          widget.slotCount;
+      h = _layoutController._viewportDelegate.resolvedConstrains.maxWidth / widget.slotCount;
     }
 
-    _layoutController._setSizes(
-        _layoutController._viewportDelegate.resolvedConstrains, h);
+    _layoutController._setSizes(_layoutController._viewportDelegate.resolvedConstrains, h);
 
     _offset = o;
 
-    offset.applyViewportDimension(
-        _layoutController._viewportDelegate.constraints.maxHeight);
+    offset.applyViewportDimension(_layoutController._viewportDelegate.constraints.maxHeight);
 
     var maxIndex = (_layoutController._endsTree.lastKey() ?? 0);
 
@@ -341,11 +333,9 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
   late double _maxExtend;
 
   ///
-  final GlobalKey<_DashboardStackState<T>> _stateKey =
-      GlobalKey<_DashboardStackState<T>>();
+  final GlobalKey<_DashboardStackState<T>> _stateKey = GlobalKey<_DashboardStackState<T>>();
 
-  final GlobalKey<ScrollableState> _scrollableKey =
-      GlobalKey<ScrollableState>();
+  final GlobalKey<ScrollableState> _scrollableKey = GlobalKey<ScrollableState>();
 
   bool scrollable = true;
 
@@ -359,8 +349,7 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
         (!_reloading || differentReload) &&
         _layoutController.slotCount != widget.slotCount &&
         _withDelegate &&
-        widget
-            .dashboardItemController.itemStorageDelegate!.layoutsBySlotCount) {
+        widget.dashboardItemController.itemStorageDelegate!.layoutsBySlotCount) {
       _reloading = true;
       _reloadFor = widget.slotCount;
       widget.dashboardItemController._items.clear();
@@ -407,11 +396,8 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
       if (_withDelegate) {
         if (_snap!.connectionState == ConnectionState.none) {
           _building = false;
-          return widget.errorPlaceholder
-                  ?.call(_snap!.error!, _snap!.stackTrace!) ??
-              const SizedBox();
-        } else if (_snap!.connectionState == ConnectionState.waiting ||
-            _reloading) {
+          return widget.errorPlaceholder?.call(_snap!.error!, _snap!.stackTrace!) ?? const SizedBox();
+        } else if (_snap!.connectionState == ConnectionState.waiting || _reloading) {
           _building = false;
 
           return widget.loadingPlaceholder ??
@@ -427,8 +413,7 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
 
   Widget dashboardWidget(BoxConstraints constrains) {
     return Scrollable(
-        physics:
-            scrollable ? widget.physics : const NeverScrollableScrollPhysics(),
+        physics: scrollable ? widget.physics : const NeverScrollableScrollPhysics(),
         key: _scrollableKey,
         controller: widget.scrollController,
         semanticChildCount: widget.dashboardItemController._items.length,
@@ -465,10 +450,7 @@ class _DashboardState<T extends DashboardItem> extends State<Dashboard<T>>
 }
 
 class _ItemCurrentPositionTween extends Tween<_ItemCurrentPosition> {
-  _ItemCurrentPositionTween(
-      {required _ItemCurrentPosition begin,
-      required _ItemCurrentPosition end,
-      required this.onlyDimensions})
+  _ItemCurrentPositionTween({required _ItemCurrentPosition begin, required _ItemCurrentPosition end, required this.onlyDimensions})
       : super(begin: begin, end: end);
 
   bool onlyDimensions;
