@@ -23,9 +23,11 @@ class DashboardItemController<T extends DashboardItem> with ChangeNotifier {
   /// Changes cannot be handled.
   DashboardItemController({
     required List<T> items,
+    bool isEditing = false,
   })  : _items = items.asMap().map(
               (key, value) => MapEntry(value.identifier, value),
             ),
+        _initialIsEditing = isEditing,
         itemStorageDelegate = null;
 
   /// You can create [DashboardItemController] with an [itemStorageDelegate].
@@ -34,14 +36,20 @@ class DashboardItemController<T extends DashboardItem> with ChangeNotifier {
   ///
   /// If the delegate is waiting for a Future to load the items, this will throw
   /// error at the end of the [timout].
-  DashboardItemController.withDelegate(
-      {Duration? timeout, required this.itemStorageDelegate})
-      : _timeout = timeout ?? const Duration(seconds: 10);
+  DashboardItemController.withDelegate({
+    Duration? timeout,
+    required this.itemStorageDelegate,
+    bool isEditing = false,
+  })  : _timeout = timeout ?? const Duration(seconds: 10),
+        _initialIsEditing = isEditing;
 
   /// To define [itemStorageDelegate] use [DashboardItemController.withDelegate]
   ///
   /// For more see [DashboardItemStorageDelegate] documentation.
   final DashboardItemStorageDelegate<T>? itemStorageDelegate;
+
+  /// Initial editing state for the controller.
+  final bool _initialIsEditing;
 
   /// Users can only edit the layout when [isEditing] is true.
   /// The [isEditing] does not have to be true to add or delete items.
@@ -206,6 +214,7 @@ class DashboardItemController<T extends DashboardItem> with ChangeNotifier {
 
   void _attach(_DashboardLayoutController layoutController) {
     _layoutController = layoutController;
+    _layoutController!.isEditing = _initialIsEditing;
   }
 }
 
